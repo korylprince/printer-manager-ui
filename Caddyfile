@@ -1,0 +1,6 @@
+:80
+log /dev/stdout
+rewrite {
+    regexp .*
+    to {path} /
+}
