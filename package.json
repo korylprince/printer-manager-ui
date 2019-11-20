@@ -1,6 +1,6 @@
 {
   "name": "printer-manager-ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "UI for Printer Manager",
   "main": "dist/app.js",
   "repository": {
