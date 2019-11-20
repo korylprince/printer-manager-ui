@@ -33,6 +33,12 @@ export default {
         },
         readonly(val) {
             this.editor.setReadOnly(this.readonly)
+            // reset on cancel
+            if (val) {
+                this.local = JSON.stringify(this.value)
+                this.init += 1
+                this.editor.setValue(JSON.stringify(this.value, null, 4), 1)
+            }
         },
         error(val) {
             this.$emit("error", val)
