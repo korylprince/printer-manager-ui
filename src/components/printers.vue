@@ -24,7 +24,7 @@ export default {
     components: {AppList},
     data() {
         return {
-            printer_headers: [{text: "Building", value: "building_name"}, {text: "Location", value: "location_name"}, {text: "Hostname", value: "hostname"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            printer_headers: [{text: "Building", value: "building_name"}, {text: "Location", value: "location_name"}, {text: "Hostname", value: "hostname"}, {text: "Model", value: "model_search_name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
         }
     },
     computed: {
