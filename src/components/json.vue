@@ -4,8 +4,8 @@
 
 <script>
 import Ace from "ace-builds/src-min-noconflict/ace"
-import Worker from "ace-builds/src-noconflict/worker-json.js"
-Ace.config.setModuleUrl("ace/mode/json_worker", Worker)
+import WorkerURL from "ace-builds/src-noconflict/worker-json.js?url"
+Ace.config.setModuleUrl("ace/mode/json_worker", WorkerURL)
 import Mode from "ace-builds/src-noconflict/mode-json"
 import Theme from "ace-builds/src-noconflict/theme-chrome"
 export default {
