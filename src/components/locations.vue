@@ -1,14 +1,22 @@
 <template>
-    <app-list name="Location"
-              :headers="location_headers"
-              :items="location_cache"
-              multi-sort
-              :sort-by="['building_name', 'name']"
-              :create-route="{name: 'create-location'}"
-              :update-route="(location) => ({name: 'update-location', params: {building_id: location.building_id, id: location.id}})"
-              show-delete @delete="do_delete($event.building_id, $event.id)"
-              :loading="_loading">
-    </app-list>
+  <app-list
+    name="Location"
+    :headers="location_headers"
+    :items="location_cache"
+    multi-sort
+    :sort-by="['building_name', 'name']"
+    :create-route="{ name: 'create-location' }"
+    :update-route="
+      (location) => ({
+        name: 'update-location',
+        params: { building_id: location.building_id, id: location.id },
+      })
+    "
+    show-delete
+    @delete="do_delete($event.building_id, $event.id)"
+    :loading="_loading"
+  >
+  </app-list>
 </template>
 
 <script>
@@ -23,7 +31,11 @@ export default {
     components: {AppList},
     data() {
         return {
-            location_headers: [{text: "Building", value: "building_name"}, {text: "Name", value: "name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            location_headers: [
+                {text: "Building", value: "building_name"},
+                {text: "Name", value: "name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
         }
     },
     computed: {
@@ -45,7 +57,10 @@ export default {
         },
         async do_delete_callback(building_id, id) {
             try {
-                await this.api_action({action: api.delete_location, params: [building_id, id]})
+                await this.api_action({
+                    action: api.delete_location,
+                    params: [building_id, id],
+                })
                 this.update_cache([CacheTypes.Location])
                 this.ADD_FEEDBACK("Location deleted")
             } catch (err) {

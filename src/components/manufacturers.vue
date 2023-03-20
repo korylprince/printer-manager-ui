@@ -1,13 +1,16 @@
 <template>
-    <app-list name="Manufacturer"
-              :headers="manufacturer_headers"
-              :items="manufacturer_cache"
-              sort-by="name"
-              :create-route="{name: 'create-manufacturer', params: {}}"
-              :update-route="{name: 'update-manufacturer', params: {}}"
-              show-delete @delete="do_delete($event.id)"
-              :loading="_loading">
-    </app-list>
+  <app-list
+    name="Manufacturer"
+    :headers="manufacturer_headers"
+    :items="manufacturer_cache"
+    sort-by="name"
+    :create-route="{ name: 'create-manufacturer', params: {} }"
+    :update-route="{ name: 'update-manufacturer', params: {} }"
+    show-delete
+    @delete="do_delete($event.id)"
+    :loading="_loading"
+  >
+  </app-list>
 </template>
 
 <script>
@@ -22,7 +25,10 @@ export default {
     components: {AppList},
     data() {
         return {
-            manufacturer_headers: [{text: "Name", value: "name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            manufacturer_headers: [
+                {text: "Name", value: "name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
         }
     },
     computed: {
@@ -44,7 +50,10 @@ export default {
         },
         async do_delete_callback(id) {
             try {
-                await this.api_action({action: api.delete_manufacturer, params: [id]})
+                await this.api_action({
+                    action: api.delete_manufacturer,
+                    params: [id],
+                })
                 this.update_cache([CacheTypes.Manufacturer])
                 this.ADD_FEEDBACK("Manufacturer deleted")
             } catch (err) {

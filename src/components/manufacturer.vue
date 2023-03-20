@@ -1,96 +1,129 @@
 <template>
-    <v-col>
-        <v-row align-content="center" justify="center">
-            <v-skeleton-loader type="article, actions" v-if="_loading_skel" width="100%" max-width="600px"></v-skeleton-loader>
-            <v-card width="100%" max-width="600px" v-else>
-                <v-card-title primary-title>
-                    <div class="headline">
-                        <template v-if="id && edit">Edit Manufacturer</template>
-                        <template v-else-if="id">Manufacturer</template>
-                        <template v-else>Create Manufacturer</template>
-                    </div>
-                    <v-spacer></v-spacer>
-                    <v-tooltip bottom v-if="id && !edit">
-                        <template v-slot:activator="{on}">
-                            <v-btn text icon v-on="on" @click="edit = true">
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>Edit Manufacturer</span>
-                    </v-tooltip>
-                </v-card-title>
+  <v-col>
+    <v-row align-content="center" justify="center">
+      <v-skeleton-loader
+        type="article, actions"
+        v-if="_loading_skel"
+        width="100%"
+        max-width="600px"
+      ></v-skeleton-loader>
+      <v-card width="100%" max-width="600px" v-else>
+        <v-card-title primary-title>
+          <div class="headline">
+            <template v-if="id && edit">Edit Manufacturer</template>
+            <template v-else-if="id">Manufacturer</template>
+            <template v-else>Create Manufacturer</template>
+          </div>
+          <v-spacer></v-spacer>
+          <v-tooltip bottom v-if="id && !edit">
+            <template v-slot:activator="{ on }">
+              <v-btn text icon v-on="on" @click="edit = true">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+            <span>Edit Manufacturer</span>
+          </v-tooltip>
+        </v-card-title>
 
-                <validation-observer ref="form" v-slot="{pristine}">
-                    <form novalidate @submit.prevent="id ? do_update(id, name) : do_create(name)">
-                        <v-card-text>
-                            <validation-provider name="name" rules="required" mode="passive" v-slot="{errors}">
-                                <v-text-field
-                                    ref="name"
-                                    label="Name"
-                                    v-model="name"
-                                    autofocus
-                                    :error-messages="errors"
-                                    :readonly="id && !edit"
-                                    required>
-                                </v-text-field>
-                            </validation-provider>
-                        </v-card-text>
+        <validation-observer ref="form" v-slot="{ pristine }">
+          <form
+            novalidate
+            @submit.prevent="id ? do_update(id, name) : do_create(name)"
+          >
+            <v-card-text>
+              <validation-provider
+                name="name"
+                rules="required"
+                mode="passive"
+                v-slot="{ errors }"
+              >
+                <v-text-field
+                  ref="name"
+                  label="Name"
+                  v-model="name"
+                  autofocus
+                  :error-messages="errors"
+                  :readonly="id && !edit"
+                  required
+                >
+                </v-text-field>
+              </validation-provider>
+            </v-card-text>
 
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn :color="id ? 'primary' : 'accent'"
-                                v-if="!id || !edit"
-                                text
-                                @click="$back()">
-                                Back
-                            </v-btn>
-                            <v-btn color="accent"
-                                   v-if="id && edit"
-                                   text
-                                   @click="cancel">
-                                Cancel
-                            </v-btn>
-                            <v-btn color="accent"
-                                   v-if="id && edit"
-                                   text
-                                   @click="do_delete(id)">
-                                Delete
-                            </v-btn>
-                            <v-btn color="accent"
-                                   v-if="!id"
-                                   text
-                                   @click="do_create(name, true)"
-                                   :loading="_loading"
-                                   :disabled="name === ''">
-                                Create &amp; Edit
-                            </v-btn>
-                            <v-btn type="submit"
-                                   color="primary"
-                                   v-if="!id || edit"
-                                   text
-                                   :loading="_loading"
-                                   :disabled="pristine || name === ''">
-                                <template v-if="id">Update</template>
-                                <template v-else>Create</template>
-                            </v-btn>
-                        </v-card-actions>
-                    </form>
-                </validation-observer>
-            </v-card>
-        </v-row>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                :color="id ? 'primary' : 'accent'"
+                v-if="!id || !edit"
+                text
+                @click="$back()"
+              >
+                Back
+              </v-btn>
+              <v-btn color="accent" v-if="id && edit" text @click="cancel">
+                Cancel
+              </v-btn>
+              <v-btn
+                color="accent"
+                v-if="id && edit"
+                text
+                @click="do_delete(id)"
+              >
+                Delete
+              </v-btn>
+              <v-btn
+                color="accent"
+                v-if="!id"
+                text
+                @click="do_create(name, true)"
+                :loading="_loading"
+                :disabled="name === ''"
+              >
+                Create &amp; Edit
+              </v-btn>
+              <v-btn
+                type="submit"
+                color="primary"
+                v-if="!id || edit"
+                text
+                :loading="_loading"
+                :disabled="pristine || name === ''"
+              >
+                <template v-if="id">Update</template>
+                <template v-else>Create</template>
+              </v-btn>
+            </v-card-actions>
+          </form>
+        </validation-observer>
+      </v-card>
+    </v-row>
 
-        <v-row v-if="id" align-content="center" justify="center" style="margin-top: 20px">
-            <app-list name="Model"
-                      :headers="model_headers"
-                      :items="models"
-                      sort-by="name"
-                      :create-route="{name: 'create-manufacturer-model', params: {manufacturer_id: id}}"
-                      :update-route="{name: 'update-model', params: {manufacturer_id: id}}"
-                      show-delete @delete="do_delete_model(id, $event.id)"
-                      :loading="models_loading">
-            </app-list>
-        </v-row>
-    </v-col>
+    <v-row
+      v-if="id"
+      align-content="center"
+      justify="center"
+      style="margin-top: 20px"
+    >
+      <app-list
+        name="Model"
+        :headers="model_headers"
+        :items="models"
+        sort-by="name"
+        :create-route="{
+          name: 'create-manufacturer-model',
+          params: { manufacturer_id: id },
+        }"
+        :update-route="{
+          name: 'update-model',
+          params: { manufacturer_id: id },
+        }"
+        show-delete
+        @delete="do_delete_model(id, $event.id)"
+        :loading="models_loading"
+      >
+      </app-list>
+    </v-row>
+  </v-col>
 </template>
 
 <script>
@@ -110,14 +143,22 @@ export default {
             clean: null,
             edit: false,
             name: "",
-            model_headers: [{text: "Name", value: "name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            model_headers: [
+                {text: "Name", value: "name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
             local_models: [],
         }
     },
     computed: {
         ...mapGetters(["is_loading", "model_cache_map"]),
         _loading() {
-            return this.is_loading(api.create_manufacturer, api.read_manufacturer, api.update_manufacturer, api.delete_manufacturer)
+            return this.is_loading(
+                api.create_manufacturer,
+                api.read_manufacturer,
+                api.update_manufacturer,
+                api.delete_manufacturer
+            )
         },
         _loading_skel() {
             return this.is_loading(api.read_manufacturer)
@@ -154,16 +195,22 @@ export default {
                 this.$refs.form.reset()
             })
         },
-        async do_create(name, edit=false) {
+        async do_create(name, edit = false) {
             if (this._loading || !(await this.$refs.form.validate())) {
                 return
             }
 
             try {
-                const manufacturer = await this.api_action({action: api.create_manufacturer, params: [name]})
+                const manufacturer = await this.api_action({
+                    action: api.create_manufacturer,
+                    params: [name],
+                })
                 this.update_cache([CacheTypes.Manufacturer])
                 if (edit) {
-                    this.$router.replace({name: "update-manufacturer", params: {id: manufacturer.id}})
+                    this.$router.replace({
+                        name: "update-manufacturer",
+                        params: {id: manufacturer.id},
+                    })
                 } else {
                     this.clean = manufacturer
                     this.$nextTick(() => {
@@ -184,7 +231,10 @@ export default {
                 try {
                     const [manufacturer, models] = await Promise.all([
                         this.api_action({action: api.read_manufacturer, params: [id]}),
-                        this.api_action({action: api.query_manufacturer_models, params: [this.id]}),
+                        this.api_action({
+                            action: api.query_manufacturer_models,
+                            params: [this.id],
+                        }),
                     ])
                     this.clean = manufacturer
                     this.$nextTick(() => {
@@ -211,7 +261,10 @@ export default {
             }
 
             try {
-                const manufacturer = await this.api_action({action: api.update_manufacturer, params: [id, name]})
+                const manufacturer = await this.api_action({
+                    action: api.update_manufacturer,
+                    params: [id, name],
+                })
                 this.update_cache([CacheTypes.Manufacturer])
                 this.clean = manufacturer
                 this.edit = false
@@ -235,7 +288,10 @@ export default {
         },
         async do_delete_callback(id) {
             try {
-                await this.api_action({action: api.delete_manufacturer, params: [id]})
+                await this.api_action({
+                    action: api.delete_manufacturer,
+                    params: [id],
+                })
                 this.update_cache([CacheTypes.Manufacturer])
                 this.$back()
                 this.ADD_FEEDBACK("Manufacturer deleted")
@@ -255,9 +311,15 @@ export default {
         },
         async do_delete_model_callback(manufacturer_id, id) {
             try {
-                await this.api_action({action: api.delete_model, params: [manufacturer_id, id]})
-                this.update_cache([CacheTypes.Model])
-                this.local_models = await this.api_action({action: api.query_manufacturer_models, params: [this.id]}),
+                await this.api_action({
+                    action: api.delete_model,
+                    params: [manufacturer_id, id],
+                })
+                this.update_cache([CacheTypes.Model]);
+                (this.local_models = await this.api_action({
+                    action: api.query_manufacturer_models,
+                    params: [this.id],
+                })),
                 this.ADD_FEEDBACK("Model deleted")
             } catch (err) {
                 if (err.response !== null && err.response.status === 409) {

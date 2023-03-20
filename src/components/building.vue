@@ -1,96 +1,126 @@
 <template>
-    <v-col>
-        <v-row align-content="center" justify="center">
-            <v-skeleton-loader type="article, actions" v-if="_loading_skel" width="100%" max-width="600px"></v-skeleton-loader>
-            <v-card width="100%" max-width="600px" v-else>
-                <v-card-title primary-title>
-                    <div class="headline">
-                        <template v-if="id && edit">Edit Building</template>
-                        <template v-else-if="id">Building</template>
-                        <template v-else>Create Building</template>
-                    </div>
-                    <v-spacer></v-spacer>
-                    <v-tooltip bottom v-if="id && !edit">
-                        <template v-slot:activator="{on}">
-                            <v-btn text icon v-on="on" @click="edit = true">
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>Edit Building</span>
-                    </v-tooltip>
-                </v-card-title>
+  <v-col>
+    <v-row align-content="center" justify="center">
+      <v-skeleton-loader
+        type="article, actions"
+        v-if="_loading_skel"
+        width="100%"
+        max-width="600px"
+      ></v-skeleton-loader>
+      <v-card width="100%" max-width="600px" v-else>
+        <v-card-title primary-title>
+          <div class="headline">
+            <template v-if="id && edit">Edit Building</template>
+            <template v-else-if="id">Building</template>
+            <template v-else>Create Building</template>
+          </div>
+          <v-spacer></v-spacer>
+          <v-tooltip bottom v-if="id && !edit">
+            <template v-slot:activator="{ on }">
+              <v-btn text icon v-on="on" @click="edit = true">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+            <span>Edit Building</span>
+          </v-tooltip>
+        </v-card-title>
 
-                <validation-observer ref="form" v-slot="{pristine}">
-                    <form novalidate @submit.prevent="id ? do_update(id, name) : do_create(name)">
-                        <v-card-text>
-                            <validation-provider name="name" rules="required" mode="passive" v-slot="{errors}">
-                                <v-text-field
-                                    ref="name"
-                                    label="Name"
-                                    v-model="name"
-                                    autofocus
-                                    :error-messages="errors"
-                                    :readonly="id && !edit"
-                                    required>
-                                </v-text-field>
-                            </validation-provider>
-                        </v-card-text>
+        <validation-observer ref="form" v-slot="{ pristine }">
+          <form
+            novalidate
+            @submit.prevent="id ? do_update(id, name) : do_create(name)"
+          >
+            <v-card-text>
+              <validation-provider
+                name="name"
+                rules="required"
+                mode="passive"
+                v-slot="{ errors }"
+              >
+                <v-text-field
+                  ref="name"
+                  label="Name"
+                  v-model="name"
+                  autofocus
+                  :error-messages="errors"
+                  :readonly="id && !edit"
+                  required
+                >
+                </v-text-field>
+              </validation-provider>
+            </v-card-text>
 
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn :color="id ? 'primary' : 'accent'"
-                                v-if="!id || !edit"
-                                text
-                                @click="$back()">
-                                Back
-                            </v-btn>
-                            <v-btn color="accent"
-                                   v-if="id && edit"
-                                   text
-                                   @click="cancel">
-                                Cancel
-                            </v-btn>
-                            <v-btn color="accent"
-                                   v-if="id && edit"
-                                   text
-                                   @click="do_delete(id)">
-                                Delete
-                            </v-btn>
-                            <v-btn color="accent"
-                                   v-if="!id"
-                                   text
-                                   @click="do_create(name, true)"
-                                   :loading="_loading"
-                                   :disabled="name === ''">
-                                Create &amp; Edit
-                            </v-btn>
-                            <v-btn type="submit"
-                                   color="primary"
-                                   v-if="!id || edit"
-                                   text
-                                   :loading="_loading"
-                                   :disabled="pristine || name === ''">
-                                <template v-if="id">Update</template>
-                                <template v-else>Create</template>
-                            </v-btn>
-                        </v-card-actions>
-                    </form>
-                </validation-observer>
-            </v-card>
-        </v-row>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                :color="id ? 'primary' : 'accent'"
+                v-if="!id || !edit"
+                text
+                @click="$back()"
+              >
+                Back
+              </v-btn>
+              <v-btn color="accent" v-if="id && edit" text @click="cancel">
+                Cancel
+              </v-btn>
+              <v-btn
+                color="accent"
+                v-if="id && edit"
+                text
+                @click="do_delete(id)"
+              >
+                Delete
+              </v-btn>
+              <v-btn
+                color="accent"
+                v-if="!id"
+                text
+                @click="do_create(name, true)"
+                :loading="_loading"
+                :disabled="name === ''"
+              >
+                Create &amp; Edit
+              </v-btn>
+              <v-btn
+                type="submit"
+                color="primary"
+                v-if="!id || edit"
+                text
+                :loading="_loading"
+                :disabled="pristine || name === ''"
+              >
+                <template v-if="id">Update</template>
+                <template v-else>Create</template>
+              </v-btn>
+            </v-card-actions>
+          </form>
+        </validation-observer>
+      </v-card>
+    </v-row>
 
-        <v-row v-if="id" align-content="center" justify="center" style="margin-top: 20px">
-            <app-list name="Location"
-                      :headers="location_headers"
-                      :items="locations"
-                      sort-by="name"
-                      :create-route="{name: 'create-building-location', params: {building_id: id}}"
-                      :update-route="{name: 'update-location', params: {building_id: id}}"
-                      show-delete @delete="do_delete_location(id, $event.id)"
-                      :loading="locations_loading">
-            </app-list>
-        </v-row>
-    </v-col>
+    <v-row
+      v-if="id"
+      align-content="center"
+      justify="center"
+      style="margin-top: 20px"
+    >
+      <app-list
+        name="Location"
+        :headers="location_headers"
+        :items="locations"
+        sort-by="name"
+        :create-route="{
+          name: 'create-building-location',
+          params: { building_id: id },
+        }"
+        :update-route="{ name: 'update-location', params: { building_id: id } }"
+        show-delete
+        @delete="do_delete_location(id, $event.id)"
+        :loading="locations_loading"
+      >
+      </app-list>
+    </v-row>
+  </v-col>
 </template>
 
 <script>
@@ -110,14 +140,22 @@ export default {
             clean: null,
             edit: false,
             name: "",
-            location_headers: [{text: "Name", value: "name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            location_headers: [
+                {text: "Name", value: "name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
             local_locations: [],
         }
     },
     computed: {
         ...mapGetters(["is_loading", "location_cache_map"]),
         _loading() {
-            return this.is_loading(api.create_building, api.read_building, api.update_building, api.delete_building)
+            return this.is_loading(
+                api.create_building,
+                api.read_building,
+                api.update_building,
+                api.delete_building
+            )
         },
         _loading_skel() {
             return this.is_loading(api.read_building)
@@ -154,16 +192,22 @@ export default {
                 this.$refs.form.reset()
             })
         },
-        async do_create(name, edit=false) {
+        async do_create(name, edit = false) {
             if (this._loading || !(await this.$refs.form.validate())) {
                 return
             }
 
             try {
-                const building = await this.api_action({action: api.create_building, params: [name]})
+                const building = await this.api_action({
+                    action: api.create_building,
+                    params: [name],
+                })
                 this.update_cache([CacheTypes.Building])
                 if (edit) {
-                    this.$router.replace({name: "update-building", params: {id: building.id}})
+                    this.$router.replace({
+                        name: "update-building",
+                        params: {id: building.id},
+                    })
                 } else {
                     this.clean = building
                     this.$nextTick(() => {
@@ -184,7 +228,10 @@ export default {
                 try {
                     const [building, locations] = await Promise.all([
                         this.api_action({action: api.read_building, params: [id]}),
-                        this.api_action({action: api.query_building_locations, params: [this.id]}),
+                        this.api_action({
+                            action: api.query_building_locations,
+                            params: [this.id],
+                        }),
                     ])
                     this.clean = building
                     this.$nextTick(() => {
@@ -211,7 +258,10 @@ export default {
             }
 
             try {
-                const building = await this.api_action({action: api.update_building, params: [id, name]})
+                const building = await this.api_action({
+                    action: api.update_building,
+                    params: [id, name],
+                })
                 this.update_cache([CacheTypes.Building])
                 this.clean = building
                 this.edit = false
@@ -255,9 +305,15 @@ export default {
         },
         async do_delete_location_callback(building_id, id) {
             try {
-                await this.api_action({action: api.delete_location, params: [building_id, id]})
-                this.update_cache([CacheTypes.Location])
-                this.local_locations = await this.api_action({action: api.query_building_locations, params: [this.id]}),
+                await this.api_action({
+                    action: api.delete_location,
+                    params: [building_id, id],
+                })
+                this.update_cache([CacheTypes.Location]);
+                (this.local_locations = await this.api_action({
+                    action: api.query_building_locations,
+                    params: [this.id],
+                })),
                 this.ADD_FEEDBACK("Location deleted")
             } catch (err) {
                 if (err.response !== null && err.response.status === 409) {

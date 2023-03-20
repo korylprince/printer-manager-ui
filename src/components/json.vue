@@ -1,10 +1,10 @@
 <template>
-    <div ref="editor" :style="{width: '100%'}"></div>
+  <div ref="editor" :style="{ width: '100%' }"></div>
 </template>
 
 <script>
 import Ace from "ace-builds/src-min-noconflict/ace"
-import Worker from "file-loader!ace-builds/src-noconflict/worker-json.js"
+import Worker from "ace-builds/src-noconflict/worker-json.js"
 Ace.config.setModuleUrl("ace/mode/json_worker", Worker)
 import Mode from "ace-builds/src-noconflict/mode-json"
 import Theme from "ace-builds/src-noconflict/theme-chrome"
@@ -77,7 +77,7 @@ export default {
     },
     mounted() {
         this.editor = Ace.edit(this.$refs.editor)
-        this.editor.session.setMode(new (Mode.Mode)())
+        this.editor.session.setMode(new Mode.Mode())
         this.editor.setTheme(Theme)
         this.editor.setShowPrintMargin(false)
         this.editor.setShowFoldWidgets(false)

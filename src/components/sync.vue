@@ -1,44 +1,44 @@
 <template>
-    <v-col>
-        <v-row align-content="center" justify="center">
-            <v-skeleton-loader type="article, actions" v-if="_loading_skel" width="100%" max-width="600px"></v-skeleton-loader>
-            <v-card width="100%" max-width="600px" v-else>
-                <v-card-title primary-title>
-                    <div class="headline">User/Group Sync</div>
-                </v-card-title>
+  <v-col>
+    <v-row align-content="center" justify="center">
+      <v-skeleton-loader
+        type="article, actions"
+        v-if="_loading_skel"
+        width="100%"
+        max-width="600px"
+      ></v-skeleton-loader>
+      <v-card width="100%" max-width="600px" v-else>
+        <v-card-title primary-title>
+          <div class="headline">User/Group Sync</div>
+        </v-card-title>
 
-                <v-card-text>
-                    <p>
-                        <strong>Last Sync:</strong> {{last_run | relative}}
-                    </p>
-                    <p>
-                        <strong>Next Sync:</strong> {{next_run | relative}}
-                    </p>
-                    <p>
-                        <strong>Users Synced:</strong> <router-link :to="{name: 'list-users'}">{{user_cache.length}}</router-link>
-                    </p>
-                    <p>
-                        <strong>Groups Synced:</strong> <router-link :to="{name: 'list-groups'}">{{group_cache.length}}</router-link>
-                    </p>
-                </v-card-text>
+        <v-card-text>
+          <p><strong>Last Sync:</strong> {{ last_run | relative }}</p>
+          <p><strong>Next Sync:</strong> {{ next_run | relative }}</p>
+          <p>
+            <strong>Users Synced:</strong>
+            <router-link :to="{ name: 'list-users' }">{{
+              user_cache.length
+            }}</router-link>
+          </p>
+          <p>
+            <strong>Groups Synced:</strong>
+            <router-link :to="{ name: 'list-groups' }">{{
+              group_cache.length
+            }}</router-link>
+          </p>
+        </v-card-text>
 
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="accent"
-                           text
-                           @click="$back()">
-                        Back
-                    </v-btn>
-                    <v-btn color="primary"
-                           text
-                           :loading="_loading"
-                           @click="do_trigger">
-                        Sync Now
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-row>
-    </v-col>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="accent" text @click="$back()"> Back </v-btn>
+          <v-btn color="primary" text :loading="_loading" @click="do_trigger">
+            Sync Now
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-row>
+  </v-col>
 </template>
 
 <script>
@@ -73,14 +73,17 @@ export default {
             return this.is_loading(api.sync_stats, api.sync_trigger)
         },
         _loading_skel() {
-            return this.is_loading(api.sync_stats) && !(this.loaded)
+            return this.is_loading(api.sync_stats) && !this.loaded
         },
     },
     methods: {
         ...mapMutations(["UPDATE_ERROR", "ADD_FEEDBACK"]),
         ...mapActions(["api_action", "update_cache"]),
         async do_read() {
-            const stats = await this.api_action({action: api.sync_stats, params: []})
+            const stats = await this.api_action({
+                action: api.sync_stats,
+                params: [],
+            })
             this.last_run = stats.last_run
             this.next_run = stats.next_run
             this.loaded = true

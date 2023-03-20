@@ -1,11 +1,13 @@
 <template>
-    <app-list name="User"
-              :headers="user_headers"
-              :items="user_cache"
-              sort-by="display_name"
-              :update-route="{name: 'read-user', params: {}}"
-              :loading="_loading">
-    </app-list>
+  <app-list
+    name="User"
+    :headers="user_headers"
+    :items="user_cache"
+    sort-by="display_name"
+    :update-route="{ name: 'read-user', params: {} }"
+    :loading="_loading"
+  >
+  </app-list>
 </template>
 
 <script>
@@ -19,7 +21,10 @@ export default {
     components: {AppList},
     data() {
         return {
-            user_headers: [{text: "Name", value: "display_name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            user_headers: [
+                {text: "Name", value: "display_name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
         }
     },
     computed: {

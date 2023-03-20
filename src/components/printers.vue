@@ -1,15 +1,27 @@
 <template>
-    <app-list name="Printer"
-              max-width="960px"
-              :headers="printer_headers"
-              :items="printer_cache"
-              multi-sort
-              :sort-by="['building_name', 'location_name']"
-              :create-route="{name: 'create-printer', params: {}}"
-              :update-route="(printer) => ({name: 'update-printer', params: {building_id: printer.building_id, location_id: printer.location_id, id: printer.id}})"
-              show-delete @delete="do_delete($event.building_id, $event.location_id, $event.id)"
-              :loading="_loading">
-    </app-list>
+  <app-list
+    name="Printer"
+    max-width="960px"
+    :headers="printer_headers"
+    :items="printer_cache"
+    multi-sort
+    :sort-by="['building_name', 'location_name']"
+    :create-route="{ name: 'create-printer', params: {} }"
+    :update-route="
+      (printer) => ({
+        name: 'update-printer',
+        params: {
+          building_id: printer.building_id,
+          location_id: printer.location_id,
+          id: printer.id,
+        },
+      })
+    "
+    show-delete
+    @delete="do_delete($event.building_id, $event.location_id, $event.id)"
+    :loading="_loading"
+  >
+  </app-list>
 </template>
 
 <script>
@@ -24,7 +36,13 @@ export default {
     components: {AppList},
     data() {
         return {
-            printer_headers: [{text: "Building", value: "building_name"}, {text: "Location", value: "location_name"}, {text: "Hostname", value: "hostname"}, {text: "Model", value: "model_search_name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            printer_headers: [
+                {text: "Building", value: "building_name"},
+                {text: "Location", value: "location_name"},
+                {text: "Hostname", value: "hostname"},
+                {text: "Model", value: "model_search_name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
         }
     },
     computed: {
@@ -46,7 +64,10 @@ export default {
         },
         async do_delete_callback(building_id, location_id, id) {
             try {
-                await this.api_action({action: api.delete_printer, params: [building_id, location_id, id]})
+                await this.api_action({
+                    action: api.delete_printer,
+                    params: [building_id, location_id, id],
+                })
                 this.update_cache([CacheTypes.Printer])
                 this.ADD_FEEDBACK("Printer deleted")
             } catch (err) {

@@ -18,7 +18,7 @@ const CacheTypes = Object.freeze({
 })
 
 const store = new Vuex.Store({
-    strict: process.env.NODE_ENV !== "production",
+    strict: import.meta.env.MODE !== "production",
     state: {
         last_error: null,
         _loading: {},
@@ -321,14 +321,21 @@ const store = new Vuex.Store({
             try {
                 const response = await api.authenticate(username, password)
                 context.commit("STOP_LOADING", api.authenticate)
-                context.commit("UPDATE_CREDENTIALS", {display_name: response.data.display_name, username, session_id: response.data.session_id})
+                context.commit("UPDATE_CREDENTIALS", {
+                    display_name: response.data.display_name,
+                    username,
+                    session_id: response.data.session_id,
+                })
             } catch (err) {
                 context.commit("STOP_LOADING", api.authenticate)
                 if (err.response !== null && err.response.status === 401) {
                     context.commit("UPDATE_ERROR", "Wrong username or password")
                     return
                 }
-                context.commit("UPDATE_ERROR", "Oops! Something bad happened. Contact your system administrator")
+                context.commit(
+                    "UPDATE_ERROR",
+                    "Oops! Something bad happened. Contact your system administrator"
+                )
                 console.error({error: err})
                 return
             }
@@ -348,7 +355,10 @@ const store = new Vuex.Store({
             if (context.state._next_dispatch_action == null) {
                 return
             }
-            await context.dispatch(context.state._next_dispatch_action, context.state._next_dispatch_payload)
+            await context.dispatch(
+                context.state._next_dispatch_action,
+                context.state._next_dispatch_payload
+            )
             context.commit("UPDATE_NEXT_DISPATCH", {action: null, payload: null})
         },
         clear_feedback(context) {
@@ -424,9 +434,15 @@ const store = new Vuex.Store({
                 }
                 if (err.response !== null && err.response.status === 401) {
                     context.dispatch("signout")
-                    context.commit("ADD_FEEDBACK", "Session expired. Please sign back in")
+                    context.commit(
+                        "ADD_FEEDBACK",
+                        "Session expired. Please sign back in"
+                    )
                 } else {
-                    context.commit("UPDATE_ERROR", "Oops! Something bad happened. Contact your system administrator")
+                    context.commit(
+                        "UPDATE_ERROR",
+                        "Oops! Something bad happened. Contact your system administrator"
+                    )
                     console.error({err: err})
                 }
                 return
@@ -442,15 +458,24 @@ const store = new Vuex.Store({
                 context.commit("STOP_LOADING", action)
                 if (err.response !== null && err.response.status === 401) {
                     context.dispatch("signout")
-                    context.commit("ADD_FEEDBACK", "Session expired. Please sign back in")
-                } else if (err.response !== null && (err.response.status === 404 || err.response.status === 409)) {
+                    context.commit(
+                        "ADD_FEEDBACK",
+                        "Session expired. Please sign back in"
+                    )
+                } else if (
+                    err.response !== null &&
+          (err.response.status === 404 || err.response.status === 409)
+                ) {
                     // pass
                 } else {
-                    context.commit("UPDATE_ERROR", "Oops! Something bad happened. Contact your system administrator")
+                    context.commit(
+                        "UPDATE_ERROR",
+                        "Oops! Something bad happened. Contact your system administrator"
+                    )
                     console.error({err: err})
                 }
                 // handle in caller
-                throw (err)
+                throw err
             }
         },
     },

@@ -1,11 +1,13 @@
 <template>
-    <app-list name="Group"
-              :headers="group_headers"
-              :items="group_cache"
-              sort-by="display_name"
-              :update-route="{name: 'read-group', params: {}}"
-              :loading="_loading">
-    </app-list>
+  <app-list
+    name="Group"
+    :headers="group_headers"
+    :items="group_cache"
+    sort-by="display_name"
+    :update-route="{ name: 'read-group', params: {} }"
+    :loading="_loading"
+  >
+  </app-list>
 </template>
 
 <script>
@@ -19,7 +21,10 @@ export default {
     components: {AppList},
     data() {
         return {
-            group_headers: [{text: "Name", value: "display_name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            group_headers: [
+                {text: "Name", value: "display_name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
         }
     },
     computed: {

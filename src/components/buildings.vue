@@ -1,13 +1,16 @@
 <template>
-    <app-list name="Building"
-              :headers="building_headers"
-              :items="building_cache"
-              sort-by="name"
-              :create-route="{name: 'create-building', params: {}}"
-              :update-route="{name: 'update-building', params: {}}"
-              show-delete @delete="do_delete($event.id)"
-              :loading="_loading">
-    </app-list>
+  <app-list
+    name="Building"
+    :headers="building_headers"
+    :items="building_cache"
+    sort-by="name"
+    :create-route="{ name: 'create-building', params: {} }"
+    :update-route="{ name: 'update-building', params: {} }"
+    show-delete
+    @delete="do_delete($event.id)"
+    :loading="_loading"
+  >
+  </app-list>
 </template>
 
 <script>
@@ -22,7 +25,10 @@ export default {
     components: {AppList},
     data() {
         return {
-            building_headers: [{text: "Name", value: "name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            building_headers: [
+                {text: "Name", value: "name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
         }
     },
     computed: {

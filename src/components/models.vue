@@ -1,14 +1,22 @@
 <template>
-    <app-list name="Model"
-              :headers="model_headers"
-              :items="model_cache"
-              multi-sort
-              :sort-by="['manufacturer_name', 'name']"
-              :create-route="{name: 'create-model'}"
-              :update-route="(model) => ({name: 'update-model', params: {manufacturer_id: model.manufacturer_id, id: model.id}})"
-              show-delete @delete="do_delete($event.manufacturer_id, $event.id)"
-              :loading="_loading">
-    </app-list>
+  <app-list
+    name="Model"
+    :headers="model_headers"
+    :items="model_cache"
+    multi-sort
+    :sort-by="['manufacturer_name', 'name']"
+    :create-route="{ name: 'create-model' }"
+    :update-route="
+      (model) => ({
+        name: 'update-model',
+        params: { manufacturer_id: model.manufacturer_id, id: model.id },
+      })
+    "
+    show-delete
+    @delete="do_delete($event.manufacturer_id, $event.id)"
+    :loading="_loading"
+  >
+  </app-list>
 </template>
 
 <script>
@@ -23,7 +31,11 @@ export default {
     components: {AppList},
     data() {
         return {
-            model_headers: [{text: "Manufacturer", value: "manufacturer_name"}, {text: "Name", value: "name"}, {text: "Actions", value: "actions", sortable: false, align: "end"}],
+            model_headers: [
+                {text: "Manufacturer", value: "manufacturer_name"},
+                {text: "Name", value: "name"},
+                {text: "Actions", value: "actions", sortable: false, align: "end"},
+            ],
         }
     },
     computed: {
@@ -45,7 +57,10 @@ export default {
         },
         async do_delete_callback(manufacturer_id, id) {
             try {
-                await this.api_action({action: api.delete_model, params: [manufacturer_id, id]})
+                await this.api_action({
+                    action: api.delete_model,
+                    params: [manufacturer_id, id],
+                })
                 this.update_cache([CacheTypes.Model])
                 this.ADD_FEEDBACK("Model deleted")
             } catch (err) {

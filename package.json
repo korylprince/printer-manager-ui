@@ -1,18 +1,16 @@
 {
   "name": "printer-manager-ui",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "UI for Printer Manager",
-  "main": "dist/app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/korylprince/printer-manager-ui.git"
   },
   "scripts": {
-    "dev": "webpack --watch --progress --config build/webpack.dev.babel.js",
-    "dev-server": "webpack-dev-server --watch --config build/webpack.dev.babel.js",
-    "build": "webpack --progress --config build/webpack.dev.babel.js",
-    "build-prod": "webpack --progress --config build/webpack.prod.babel.js",
-    "lint": "eslint  --fix --ext .js --ext .vue src build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "keywords": [
     "Printer Manager"
@@ -20,49 +18,25 @@
   "author": "Kory Prince <korylprince@gmail.com>",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "ace-builds": "^1.4.7",
-    "axios": "0.19.0",
-    "date-fns": "^2.8.0",
-    "vee-validate": "3.0.11",
-    "vue": "2.6.10",
-    "vue-router": "3.1.3",
-    "vuetify": "2.1.10",
-    "vuex": "3.1.2"
+    "@mdi/font": "^7.2.96",
+    "ace-builds": "^1.16.0",
+    "axios": "^1.3.4",
+    "date-fns": "^2.29.3",
+    "vee-validate": "^3.4.15",
+    "vue": "^2.7.7",
+    "vue-router": "^3.5.4",
+    "vuetify": "^2.6.14",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/plugin-transform-runtime": "^7.6.2",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/register": "^7.7.0",
-    "@babel/runtime": "^7.7.2",
-    "@mdi/font": "^4.5.95",
-    "autoprefixer": "^9.7.2",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.2.0",
-    "eslint": "^6.6.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-html": "^6.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-vue": "^6.0.1",
-    "favicons-webpack-plugin": "^1.0.2",
-    "fibers": "^4.0.2",
-    "file-loader": "^4.2.0",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.8.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "postcss-loader": "^3.0.0",
-    "sass": "^1.23.6",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
-    "terser-webpack-plugin": "^2.2.1",
-    "vue-loader": "^15.7.2",
-    "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.3.1",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "webpack-merge": "^4.2.2"
+    "@rushstack/eslint-patch": "^1.1.0",
+    "@vitejs/plugin-vue2": "^1.1.2",
+    "eslint": "^8.5.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "sass": "^1.59.3",
+    "terser": "^5.14.2",
+    "unplugin-vue-components": "^0.24.1",
+    "vite": "^3.0.2",
+    "vite-plugin-favicons-inject": "^2.2.0"
   }
 }

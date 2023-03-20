@@ -1,7 +1,6 @@
-/* global API_BASE */
+const API_BASE = import.meta.env.VITE_API_BASE ? import.meta.env.VITE_API_BASE : "/api/1.0"
 
 import axios from "axios"
-
 import store from "./store.js"
 
 const api = {
@@ -33,38 +32,72 @@ const api = {
     },
 
     create_location(building_id, name) {
-        return store.getters.$http.post(`${API_BASE}/buildings/${building_id}/locations`, {name})
+        return store.getters.$http.post(
+            `${API_BASE}/buildings/${building_id}/locations`,
+            {name}
+        )
     },
     read_location(building_id, id) {
-        return store.getters.$http.get(`${API_BASE}/buildings/${building_id}/locations/${id}`)
+        return store.getters.$http.get(
+            `${API_BASE}/buildings/${building_id}/locations/${id}`
+        )
     },
     update_location(building_id, id, building_id_new, name) {
-        return store.getters.$http.put(`${API_BASE}/buildings/${building_id}/locations/${id}`, {building_id: building_id_new, name})
+        return store.getters.$http.put(
+            `${API_BASE}/buildings/${building_id}/locations/${id}`,
+            {building_id: building_id_new, name}
+        )
     },
     delete_location(building_id, id) {
-        return store.getters.$http.delete(`${API_BASE}/buildings/${building_id}/locations/${id}`)
+        return store.getters.$http.delete(
+            `${API_BASE}/buildings/${building_id}/locations/${id}`
+        )
     },
     query_building_locations(building_id, params) {
-        return store.getters.$http.get(`${API_BASE}/buildings/${building_id}/locations`, {params})
+        return store.getters.$http.get(
+            `${API_BASE}/buildings/${building_id}/locations`,
+            {params}
+        )
     },
     query_locations(params) {
         return store.getters.$http.get(`${API_BASE}/locations`, {params})
     },
 
     create_printer(building_id, location_id, model_id, hostname, driver_extra) {
-        return store.getters.$http.post(`${API_BASE}/buildings/${building_id}/locations/${location_id}/printers`, {model_id, hostname, driver_extra})
+        return store.getters.$http.post(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/printers`,
+            {model_id, hostname, driver_extra}
+        )
     },
     read_printer(building_id, location_id, id) {
-        return store.getters.$http.get(`${API_BASE}/buildings/${building_id}/locations/${location_id}/printers/${id}`)
+        return store.getters.$http.get(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/printers/${id}`
+        )
     },
-    update_printer(building_id, location_id, id, location_id_new, model_id, hostname, driver_extra) {
-        return store.getters.$http.put(`${API_BASE}/buildings/${building_id}/locations/${location_id}/printers/${id}`, {location_id: location_id_new, model_id, hostname, driver_extra})
+    update_printer(
+        building_id,
+        location_id,
+        id,
+        location_id_new,
+        model_id,
+        hostname,
+        driver_extra
+    ) {
+        return store.getters.$http.put(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/printers/${id}`,
+            {location_id: location_id_new, model_id, hostname, driver_extra}
+        )
     },
     delete_printer(building_id, location_id, id) {
-        return store.getters.$http.delete(`${API_BASE}/buildings/${building_id}/locations/${location_id}/printers/${id}`)
+        return store.getters.$http.delete(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/printers/${id}`
+        )
     },
     query_building_location_printers(building_id, location_id, params) {
-        return store.getters.$http.get(`${API_BASE}/buildings/${building_id}/locations/${location_id}/printers`, {params})
+        return store.getters.$http.get(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/printers`,
+            {params}
+        )
     },
     query_printers(params) {
         return store.getters.$http.get(`${API_BASE}/printers`, {params})
@@ -87,19 +120,32 @@ const api = {
     },
 
     create_model(manufacturer_id, name, driver) {
-        return store.getters.$http.post(`${API_BASE}/manufacturers/${manufacturer_id}/models`, {name, driver})
+        return store.getters.$http.post(
+            `${API_BASE}/manufacturers/${manufacturer_id}/models`,
+            {name, driver}
+        )
     },
     read_model(manufacturer_id, id) {
-        return store.getters.$http.get(`${API_BASE}/manufacturers/${manufacturer_id}/models/${id}`)
+        return store.getters.$http.get(
+            `${API_BASE}/manufacturers/${manufacturer_id}/models/${id}`
+        )
     },
     update_model(manufacturer_id, id, manufacturer_id_new, name, driver) {
-        return store.getters.$http.put(`${API_BASE}/manufacturers/${manufacturer_id}/models/${id}`, {manufacturer_id: manufacturer_id_new, name, driver})
+        return store.getters.$http.put(
+            `${API_BASE}/manufacturers/${manufacturer_id}/models/${id}`,
+            {manufacturer_id: manufacturer_id_new, name, driver}
+        )
     },
     delete_model(manufacturer_id, id) {
-        return store.getters.$http.delete(`${API_BASE}/manufacturers/${manufacturer_id}/models/${id}`)
+        return store.getters.$http.delete(
+            `${API_BASE}/manufacturers/${manufacturer_id}/models/${id}`
+        )
     },
     query_manufacturer_models(manufacturer_id, params) {
-        return store.getters.$http.get(`${API_BASE}/manufacturers/${manufacturer_id}/models`, {params})
+        return store.getters.$http.get(
+            `${API_BASE}/manufacturers/${manufacturer_id}/models`,
+            {params}
+        )
     },
     query_models(params) {
         return store.getters.$http.get(`${API_BASE}/models`, {params})
@@ -127,29 +173,41 @@ const api = {
     },
 
     read_building_location_users(building_id, id) {
-        return store.getters.$http.get(`${API_BASE}/buildings/${building_id}/locations/${id}/users`)
+        return store.getters.$http.get(
+            `${API_BASE}/buildings/${building_id}/locations/${id}/users`
+        )
     },
     read_user_locations(id) {
         return store.getters.$http.get(`${API_BASE}/users/${id}/locations`)
     },
     assign_building_location_user(building_id, location_id, user_id) {
-        return store.getters.$http.put(`${API_BASE}/buildings/${building_id}/locations/${location_id}/users/${user_id}/assign`)
+        return store.getters.$http.put(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/users/${user_id}/assign`
+        )
     },
     unassign_building_location_user(building_id, location_id, user_id) {
-        return store.getters.$http.delete(`${API_BASE}/buildings/${building_id}/locations/${location_id}/users/${user_id}/assign`)
+        return store.getters.$http.delete(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/users/${user_id}/assign`
+        )
     },
 
     read_building_location_groups(building_id, id) {
-        return store.getters.$http.get(`${API_BASE}/buildings/${building_id}/locations/${id}/groups`)
+        return store.getters.$http.get(
+            `${API_BASE}/buildings/${building_id}/locations/${id}/groups`
+        )
     },
     read_group_locations(id) {
         return store.getters.$http.get(`${API_BASE}/groups/${id}/locations`)
     },
     assign_building_location_group(building_id, location_id, group_id) {
-        return store.getters.$http.put(`${API_BASE}/buildings/${building_id}/locations/${location_id}/groups/${group_id}/assign`)
+        return store.getters.$http.put(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/groups/${group_id}/assign`
+        )
     },
     unassign_building_location_group(building_id, location_id, group_id) {
-        return store.getters.$http.delete(`${API_BASE}/buildings/${building_id}/locations/${location_id}/groups/${group_id}/assign`)
+        return store.getters.$http.delete(
+            `${API_BASE}/buildings/${building_id}/locations/${location_id}/groups/${group_id}/assign`
+        )
     },
 }
 
