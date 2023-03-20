@@ -1,0 +1,8 @@
+:80 {
+    log {
+        output stdout
+        format console
+    }
+    file_server
+    try_files {path} /
+}
